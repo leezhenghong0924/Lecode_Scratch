@@ -45,14 +45,11 @@ class VirtualMachine extends EventEmitter {
         super();
 
 
-        //const a = new EIMBlocks();
-        //a.socket.on("recommendModule", msg => {
+        // const a = new EIMBlocks();
+        // a.socket.on("recommendModule", msg => {
         //    const newBlocks = adapter(e);
-        //    // A create event can create many blocks. Add them all.
-        //    for (let i = 0; i < newBlocks.length; i++) {
-        //        this.createBlock(newBlocks[i]);
-        //    }
-        //});
+           
+        // });
 
 
         /**
@@ -149,8 +146,10 @@ class VirtualMachine extends EventEmitter {
         
         this.extensionManager = new ExtensionManager(this.runtime);
 
+
+        
         this.blockListener = this.blockListener.bind(this);//编程区代码块点击监听
-        this.flyoutBlockListener = this.flyoutBlockListener.bind(this);
+        this.flyoutBlockListener = this.flyoutBlockListener.bind(this);//工具栏代码块监听
         this.monitorBlockListener = this.monitorBlockListener.bind(this);
         this.variableListener = this.variableListener.bind(this);
     }
@@ -161,6 +160,8 @@ class VirtualMachine extends EventEmitter {
     start () {
         this.runtime.start();
     }
+    
+    
 
     /**
      * "Green flag" handler - start all threads starting with a green flag.
@@ -524,7 +525,6 @@ class VirtualMachine extends EventEmitter {
             // TODO not sure if we need to check that it also isn't a data view
             input = JSON.stringify(input);
         }
-
         const validationPromise = new Promise((resolve, reject) => {
             // The second argument of true below indicates to the parser/validator
             // that the given input should be treated as a single sprite and not
@@ -1145,7 +1145,6 @@ class VirtualMachine extends EventEmitter {
     shareBlocksToTarget (blocks, targetId, optFromTargetId) {
         const copiedBlocks = JSON.parse(JSON.stringify(blocks));
         const target = this.runtime.getTargetById(targetId);
-        
         if (optFromTargetId) {
             // If the blocks are being shared from another target,
             // resolve any possible variable conflicts that may arise.
@@ -1375,6 +1374,7 @@ class VirtualMachine extends EventEmitter {
      * @param {string} targetId The id for the target to put into a drag state
      */
     startDrag (targetId) {
+        console.log('拖拽');
         const target = this.runtime.getTargetById(targetId);
         if (target) {
             this._dragTarget = target;

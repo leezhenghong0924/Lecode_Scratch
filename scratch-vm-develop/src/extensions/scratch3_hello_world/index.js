@@ -1,8 +1,7 @@
 const ArgumentType = require("../../extension-support/argument-type");
 const BlockType = require("../../extension-support/block-type");
 const formatMessage = require("format-message");
-const io = require("socket.io-client"); // yarn add socket.io-client socket.io-client@2.2.0
-
+//const io = require("socket.io-client"); // yarn add socket.io-client socket.io-client@2.2.0
 
 /**
  * Icon svg to be displayed at the left edge of each extension block, encoded as a data URI.
@@ -29,40 +28,40 @@ class EIMBlocks {
          * @type {Runtime}
          */
         this.runtime = runtime;
-        var adapterHost = "localhost";//"101.200.55.102";
-        //electron打包的应用使用 `wss://${adapterHost}:12358`
-        this.socket = io(`//${adapterHost}:12358`, {
-            transports: ["websocket"]
-        });
-        //this.socket = io({
-        //    transports: ["websocket"]
-        //});
+        // var adapterHost = "localhost";//"101.200.55.102";
+        // //electron打包的应用使用 `wss://${adapterHost}:12358`
+        // this.socket = io(`//${adapterHost}:12358`, {
+        //     transports: ["websocket"]
+        // });
+        // //this.socket = io({
+        // //    transports: ["websocket"]
+        // //});
 
-        //this.socket.on("recommendModule", this.aa);
-        this.socket.on("recommendModule", msg => {
-            this.message = msg.message;
+        // //this.socket.on("recommendModule", this.aa);
+        // this.socket.on("recommendModule", msg => {
+        //     this.message = msg.message;
 
-            console.log("11111111111111111111111");
+        //     console.log("11111111111111111111111");
 
-            //const topic = this.message.topic;
-            //if (topic != CONTROL_TOPIC) {
-            //    const message = this.message.payload;
-            //    this.message = message; // 可能被清空
-            //    this.topic = topic;
-            //    this.origin_message = message;
-            //}
+        //     //const topic = this.message.topic;
+        //     //if (topic != CONTROL_TOPIC) {
+        //     //    const message = this.message.payload;
+        //     //    this.message = message; // 可能被清空
+        //     //    this.topic = topic;
+        //     //    this.origin_message = message;
+        //     //}
 
-            //if (topic === CONTROL_TOPIC) {
-            //    const type = this.message.type;
-            //    if (type === "event/extensions_statu") {
-            //        this.extensions_statu = this.message.payload; //json
-            //    }
-            //}
-            //this.socket.emit("print", { topic: TOPIC, payload: "收到了消息" });
-            //console.log("收到了来自unity的消息" + this.message);
+        //     //if (topic === CONTROL_TOPIC) {
+        //     //    const type = this.message.type;
+        //     //    if (type === "event/extensions_statu") {
+        //     //        this.extensions_statu = this.message.payload; //json
+        //     //    }
+        //     //}
+        //     //this.socket.emit("print", { topic: TOPIC, payload: "收到了消息" });
+        //     //console.log("收到了来自unity的消息" + this.message);
             
             
-        });
+        // });
         
         //this.socket.on("recommendModule", msg => {
         //    this.message = msg.message;
@@ -70,7 +69,7 @@ class EIMBlocks {
         //    this.socket.emit("print", { topic: TOPIC, payload: "收到了消息" });
 
         //});
-
+        
 
     }
      
@@ -245,7 +244,7 @@ class EIMBlocks {
     // 使用广播的概念, 与scratch保持一致
     broadcastMessage(args) {
         const message = args.DATA;
-        this.socket.emit("actuator", { topic: TOPIC, payload: message });
+        this.runtime.socket.emit("actuator", { topic: TOPIC, payload: message });
         
         return;
     }
@@ -271,7 +270,7 @@ class EIMBlocks {
     broadcastTopicMessage(args) {
         const topic = args.TOPIC;
         const message = args.DATA;
-        this.socket.emit("actuator", { topic: topic, payload: message });
+        this.runtime.socket.emit("actuator", { topic: topic, payload: message });
         return;
     }
 
@@ -283,7 +282,7 @@ class EIMBlocks {
             type: "web/extension_control",
             payload: { action: turn, extension_name: extension_name }
         };
-        this.socket.emit("actuator", message);
+        this.runtime.socket.emit("actuator", message);
         return;
     }
 

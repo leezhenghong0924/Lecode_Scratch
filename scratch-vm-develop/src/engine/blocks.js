@@ -295,7 +295,6 @@ class Blocks {
      * @param {?Runtime} optRuntime Optional runtime to forward click events to.
      */
     blocklyListen(e, optRuntime) {
-        
         // Validate event
         if (typeof e !== 'object') return;
         if (typeof e.blockId !== 'string' && typeof e.varId !== 'string' &&
@@ -315,7 +314,7 @@ class Blocks {
         // Block create/update/destroy
         switch (e.type) {
             
-        case 'create': {
+        case 'create': {//创建blocks的功能脚本
             const newBlocks = adapter(e);
             // A create event can create many blocks. Add them all.
             for (let i = 0; i < newBlocks.length; i++) {
@@ -352,6 +351,7 @@ class Blocks {
 
                 // Drag blocks onto another sprite
                 if (e.isOutside) {
+                    
                     const newBlocks = adapter(e);
                     optRuntime.emitBlockEndDrag(newBlocks, e.blockId);
                 }

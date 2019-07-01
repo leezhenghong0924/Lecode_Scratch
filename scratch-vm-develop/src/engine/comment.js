@@ -26,6 +26,7 @@ class Comment {
         this.height = Math.max(Number(height), Comment.MIN_HEIGHT);
         this.minimized = minimized || false;
         this.blockId = null;
+        console.log('ahhahah');
     }
 
     toXML () {

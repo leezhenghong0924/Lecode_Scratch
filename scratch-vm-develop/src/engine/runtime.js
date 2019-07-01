@@ -28,6 +28,8 @@ const Video = require('../io/video');
 const StringUtil = require('../util/string-util');
 const uid = require('../util/uid');
 
+const io = require("socket.io-client");
+
 const defaultBlockPackages = {
     scratch3_control: require('../blocks/scratch3_control'),
     scratch3_event: require('../blocks/scratch3_event'),
@@ -159,8 +161,13 @@ class Runtime extends EventEmitter {
     constructor () {
         super();
 
+        var adapterHost = "localhost";//"101.200.55.102";
+        this.socket = io(`//${adapterHost}:12358`, {
+            transports: ["websocket"]
+        });
+        console.log('123');
         /**
-         * Target management and storage.
+         * Target management and storage.目标管理和存储
          * @type {Array.<!Target>}
          */
         this.targets = [];

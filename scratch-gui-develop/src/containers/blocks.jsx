@@ -25,11 +25,13 @@ import {activateColorPicker} from '../reducers/color-picker';
 import {closeExtensionLibrary, openSoundRecorder, openConnectionModal} from '../reducers/modals';
 import {activateCustomProcedures, deactivateCustomProcedures} from '../reducers/custom-procedures';
 import {setConnectionModalExtensionId} from '../reducers/connection-modal';
+//const io = require("socket.io-client");
 
 import {
     activateTab,
     SOUNDS_TAB_INDEX
 } from '../reducers/editor-tab';
+import { testModeAPI } from 'react-ga';
 
 const addFunctionListener = (object, property, callback) => {
     const oldFn = object[property];
@@ -74,14 +76,45 @@ class Blocks extends React.Component {
         this.ScratchBlocks.prompt = this.handlePromptStart;
         this.ScratchBlocks.statusButtonCallback = this.handleConnectionModalStart;
         this.ScratchBlocks.recordSoundCallback = this.handleOpenSoundRecorder;
-
+		//设置state
         this.state = {
             workspaceMetrics: {},
             prompt: null
         };
         this.onTargetsUpdate = debounce(this.onTargetsUpdate, 100);
         this.toolboxUpdateQueue = [];
+
+
+
+        this.props.vm.runtime.socket.on("recommendModule", msg => {
+            this.message = msg.message;
+            this.sprinkles(1);
+    
+        });
     }
+
+    sprinkles(n) {
+        var toolbox = this.workspace.options.languageTree;
+        if (!toolbox) {
+          console.error('Toolbox not found; add a toolbox element to the DOM.');
+          return;
+        }
+        var blocks = toolbox.getElementsByTagName('block');
+        //var blocks=document.getElementById("eim.sendMessage");
+        console.log(blocks);
+        for (var i = 0; i < n; i++) {
+          var blockXML = blocks[Math.floor(Math.random() * blocks.length)];
+          var block = this.ScratchBlocks.Xml.domToBlock(blockXML, this.workspace);
+          block.initSvg();
+          block.moveBy(
+            Math.round(Math.random() * 450 + 40),
+            Math.round(Math.random() * 600 + 40)
+          );
+        }
+    }
+ 
+
+	//在第一次渲染后调用，只在客户端
     componentDidMount () {
         this.ScratchBlocks.FieldColourSlider.activateEyedropper_ = this.props.onActivateColorPicker;
         this.ScratchBlocks.Procedures.externalProcedureDefCallback = this.props.onActivateCustomProcedures;
@@ -113,7 +146,32 @@ class Blocks extends React.Component {
         }
 
         analytics.pageview('/editors/blocks');
-    }
+
+
+        //var blocks = document.getElementsByTagName('block');
+        // var xml="<xml><variables></variables><block type='motion_movesteps' id='SBh;$cA)Z!2fjkf~Q;ol' x='44' y='1'><value name='STEPS'><shadow type='math_number' id='-Rwf|X(4VM@Un8KLf!#l'><field name='NUM'>10</field></shadow></value></block></xml>";
+        // var bloc = this.ScratchBlocks.Xml.domToBlock(xml,this.workspace);
+         //console.log(blocks[0]);
+
+        // for (var i = 0; i < 10; i++) {
+          
+          
+        //   block.initSvg();
+        //   block.moveBy(
+        //     Math.round(Math.random() * 450 + 40),
+        //     Math.round(Math.random() * 600 + 40)
+        //   );
+        // }
+
+
+        //test();
+
+        }
+        test(){
+            console.log('aaa');
+        }
+
+		//返回一个布尔值。在组件接收到新的props或者state时被调用。在初始化时或者使用forceUpdate时不被调用。 可以在你确认不需要更新组件时使用。
     shouldComponentUpdate (nextProps, nextState) {
         return (
             this.state.prompt !== nextState.prompt ||
@@ -125,7 +183,8 @@ class Blocks extends React.Component {
             this.props.anyModalVisible !== nextProps.anyModalVisible ||
             this.props.stageSize !== nextProps.stageSize
         );
-    }
+		}
+	//在组件完成更新后立即调用。在初始化时不会被调用。
     componentDidUpdate (prevProps) {
         // If any modals are open, call hideChaff to close z-indexed field editors
         if (this.props.anyModalVisible && !prevProps.anyModalVisible) {
@@ -163,7 +222,8 @@ class Blocks extends React.Component {
         } else {
             this.workspace.setVisible(false);
         }
-    }
+		}
+	//在组件从 DOM 中移除之前立刻被调用。
     componentWillUnmount () {
         this.detachVM();
         this.workspace.dispose();
@@ -198,8 +258,8 @@ class Blocks extends React.Component {
             this.workspace.toolbox_.setFlyoutScrollPos(currentCategoryPos + offset);
         } else {
             this.workspace.toolbox_.setFlyoutScrollPos(currentCategoryPos);
-        }
-
+				}
+				
         const queue = this.toolboxUpdateQueue;
         this.toolboxUpdateQueue = [];
         queue.forEach(fn => fn());
@@ -295,7 +355,24 @@ class Blocks extends React.Component {
     onVisualReport (data) {
         this.workspace.reportValue(data.id, data.value);
     }
+
+
+    
+
     onWorkspaceUpdate (data) {
+        //
+        // var toolbox = this.workspace.options.languageTree;
+        // var blocks = toolbox.getElementsByTagName('block');
+        // var blockXML = blocks[1];
+        // var block = this.ScratchBlocks.Xml.domToBlock(blockXML, this.workspace);
+
+        // block.initSvg();
+        // block.moveBy(
+        //   200,
+        //   200
+        // );
+        
+        //console.log(blocks[1]);
         // When we change sprites, update the toolbox to have the new sprite's blocks
         if (this.props.vm.editingTarget) {
             const target = this.props.vm.editingTarget;
@@ -303,7 +380,6 @@ class Blocks extends React.Component {
             const toolboxXML = makeToolboxXML(target.isStage, target.id, dynamicBlocksXML);
             this.props.updateToolboxState(toolboxXML);
         }
-
         if (this.props.vm.editingTarget && !this.state.workspaceMetrics[this.props.vm.editingTarget.id]) {
             this.onWorkspaceMetricsChange();
         }
@@ -340,7 +416,9 @@ class Blocks extends React.Component {
         // fresh workspace and we don't want any changes made to another sprites
         // workspace to be 'undone' here.
         this.workspace.clearUndo();
+        //this.sprinkles(1);
     }
+    //在工具栏添加插件
     handleExtensionAdded (blocksInfo) {
         // select JSON from each block info object then reject the pseudo-blocks which don't have JSON, like separators
         // this actually defines blocks and MUST run regardless of the UI state
@@ -480,7 +558,8 @@ class Blocks extends React.Component {
                         }}
                         onRequestClose={this.handleCustomProceduresClose}
                     />
-                ) : null}
+								) : null}
+								
 				</React.Fragment>
 
 				);
@@ -542,9 +621,9 @@ Blocks.defaultOptions = {
         colour: '#ddd'
     },
     colours: {
-        workspace: '#F9F9F9',
+				workspace: '#B50606',
         flyout: '#F9F9F9',
-        toolbox: '#FFFFFF',
+        toolbox: '#FFFFFF',//#FFFFFF
         toolboxSelected: '#E9EEF2',
         scrollbar: '#CECDCE',
         scrollbarHover: '#CECDCE',
@@ -553,8 +632,8 @@ Blocks.defaultOptions = {
         fieldShadow: 'rgba(255, 255, 255, 0.3)',
         dragShadowOpacity: 0.6
     },
-    comments: true,
-    collapse: false,
+    comments: true,//允许块有注释
+    collapse: false,//允许折叠或展开块
     sounds: false
 };
 

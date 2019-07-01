@@ -1,8 +1,8 @@
 import classNames from 'classnames';
-import omit from 'lodash.omit';
-import PropTypes from 'prop-types';
+import omit from 'lodash.omit';//省略对象中的某一个值
+import PropTypes from 'prop-types';//数据类型检查
 import React from 'react';
-import {defineMessages, FormattedMessage, injectIntl, intlShape} from 'react-intl';
+import {defineMessages, FormattedMessage, injectIntl, intlShape} from 'react-intl';//做国际化，实现多语言
 import {connect} from 'react-redux';
 import MediaQuery from 'react-responsive';
 import {Tab, Tabs, TabList, TabPanel} from 'react-tabs';
@@ -52,7 +52,7 @@ const messages = defineMessages({
 // Cache this value to only retrieve it once the first time.
 // Assume that it doesn't change for a session.
 let isRendererSupported = null;
-
+//    函数名          参数      函数体
 const GUIComponent = props => {
     const {
         accountNavOpen,
@@ -108,7 +108,7 @@ const GUIComponent = props => {
         tipsLibraryVisible,
         vm,
         ...componentProps
-    } = omit(props, 'dispatch');
+    } = omit(props, 'dispatch');//返回除去props对象中包含的dispatch对象
     if (children) {
         return <Box {...componentProps}>{children}</Box>;
     }
@@ -405,10 +405,8 @@ GUIComponent.defaultProps = {
 };
 
 const mapStateToProps = state => ({
-    // This is the button's mode, as opposed to the actual current state
+    // This is the button's mode, as opposed to the actual current state 这是按钮的模式，而不是实际的当前状态
     stageSizeMode: state.scratchGui.stageSize.stageSize
 });
 
-export default injectIntl(connect(
-    mapStateToProps
-)(GUIComponent));
+export default injectIntl(connect(mapStateToProps)(GUIComponent));

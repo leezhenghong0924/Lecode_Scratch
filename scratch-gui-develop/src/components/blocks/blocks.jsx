@@ -9,15 +9,15 @@ const BlocksComponent = props => {
         containerRef,
         dragOver,
         ...componentProps
-    } = props;
-    return (
+		} = props;
+		
+		return (
         <Box
-            className={classNames(styles.blocks, {
-                [styles.dragOver]: dragOver
-            })}
+            className={classNames(styles.blocks, {[styles.dragOver]: dragOver})}
             {...componentProps}
             componentRef={containerRef}
         />
+
     );
 };
 BlocksComponent.propTypes = {

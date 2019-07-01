@@ -138,7 +138,7 @@ class Sprite {
         const newSprite = new Sprite(null, this.runtime);
 
         newSprite.blocks = this.blocks.duplicate();
-
+        
         const allNames = this.runtime.targets.map(t => t.sprite.name);
         newSprite.name = StringUtil.unusedName(this.name, allNames);
 

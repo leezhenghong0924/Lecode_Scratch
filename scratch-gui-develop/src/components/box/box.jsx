@@ -23,7 +23,8 @@ const getRandomColor = (function () {
     return function () {
         const r = Math.max(parseInt(random() * 100, 10) % 256, 1);
         const g = Math.max(parseInt(random() * 100, 10) % 256, 1);
-        const b = Math.max(parseInt(random() * 100, 10) % 256, 1);
+		const b = Math.max(parseInt(random() * 100, 10) % 256, 1);
+				
         return `rgb(${r},${g},${b})`;
     };
 }());
@@ -47,8 +48,10 @@ const Box = props => {
         shrink,
         style,
         ...componentProps
-    } = props;
-    return React.createElement(element, {
+        } = props;
+
+		return React.createElement(element,
+		{
         className: classNames(className, styles.box),
         ref: componentRef,
         style: Object.assign(
@@ -65,14 +68,15 @@ const Box = props => {
                 width: width,
                 height: height
             },
-            process.env.DEBUG ? {
-                backgroundColor: getRandomColor(),
-                outline: `1px solid black`
+        process.env.DEBUG ? {
+                backgroundColor: getRandomColor(),//所有模块的背景颜色
+                outline: `10px solid black`
             } : {},
-            style
+        style
         ),
         ...componentProps
-    }, children);
+		},
+		children);
 };
 Box.propTypes = {
     /** Defines how the browser distributes space between and around content items vertically within this box. */
