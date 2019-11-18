@@ -55,6 +55,7 @@ import {
 } from '../../reducers/menus';
 
 import styles from './menu-bar.css';
+import Switch from 'react-switch';
 
 import helpIcon from '../../lib/assets/icon--tutorials.svg';
 import mystuffIcon from './icon--mystuff.png';
@@ -147,6 +148,7 @@ class MenuBar extends React.Component {
             'handleLanguageMouseUp',
             'handleRestoreOption',
             'restoreOptionMessage'
+
         ]);
     }
     handleClickNew () {
@@ -239,6 +241,10 @@ class MenuBar extends React.Component {
         }
         }
     }
+
+    /* */
+   
+
     render () {
         const saveNowMessage = (
             <FormattedMessage
@@ -291,20 +297,24 @@ class MenuBar extends React.Component {
                 <div className={styles.mainMenu}>
                     <div className={styles.fileGroup}>
                         <div className={classNames(styles.menuBarItem)}>
-                            <a
-                                href="https://scratch.mit.edu"
-                                rel="noopener noreferrer"
-                                target="_blank"
-                            >
-                                <img
+                            {/* <a
+                                // href="https://scratch.mit.edu"
+                                // rel="noopener noreferrer"
+                                // target="_blank"
+                            > */}
+                                <h2>
+                                    Le-code    
+                                </h2>    
+                                {/* <img
                                     alt="Scratch"
                                     className={styles.scratchLogo}
                                     draggable={false}
                                     src={scratchLogo}
-                                />
-                            </a>
+                                /> */}
+                            {/* </a> */}
                         </div>
-                        <div
+                        
+                        {/* <div
                             className={classNames(styles.menuBarItem, styles.hoverable, styles.languageMenu)}
                         >
                             <div>
@@ -318,7 +328,7 @@ class MenuBar extends React.Component {
                                 />
                             </div>
                             <LanguageSelector label={this.props.intl.formatMessage(ariaMessages.language)} />
-                        </div>
+                        </div> */}
                         <div
                             className={classNames(styles.menuBarItem, styles.hoverable, {
                                 [styles.active]: this.props.fileMenuOpen
@@ -394,7 +404,7 @@ class MenuBar extends React.Component {
                                 </MenuSection>
                             </MenuBarMenu>
                         </div>
-                        <div
+                        {/* <div
                             className={classNames(styles.menuBarItem, styles.hoverable, {
                                 [styles.active]: this.props.editMenuOpen
                             })}
@@ -440,8 +450,8 @@ class MenuBar extends React.Component {
                                         </MenuItem>
                                     )}</TurboMode>
                                 </MenuSection>
-                            </MenuBarMenu>
-                        </div>
+                            </MenuBarMenu> 
+                        </div>*/}
                     </div>
                     <Divider className={classNames(styles.divider)} />
                     <div
@@ -478,23 +488,23 @@ class MenuBar extends React.Component {
                         />
                     ) : null)}
                     <div className={classNames(styles.menuBarItem)}>
-                        {this.props.canShare ? (
+                        {/* {this.props.canShare ? (
                             (this.props.isShowingProject || this.props.isUpdating) && (
                                 <ProjectWatcher onDoneUpdating={this.props.onSeeCommunity}>
                                     {
-                                        waitForUpdate => (
-                                            <ShareButton
-                                                className={styles.menuBarButton}
-                                                isShared={this.props.isShared}
-                                                /* eslint-disable react/jsx-no-bind */
-                                                onClick={() => {
-                                                    this.handleClickShare(waitForUpdate);
-                                                }}
-                                                /* eslint-enable react/jsx-no-bind */
-                                            />
-                                        )
+                                        // waitForUpdate => (
+                                        //     <ShareButton
+                                        //         className={styles.menuBarButton}
+                                        //         isShared={this.props.isShared}
+                                        //         /* eslint-disable react/jsx-no-bind */
+                                        //         onClick={() => {
+                                        //             this.handleClickShare(waitForUpdate);
+                                        //         }}
+                                        //         /* eslint-enable react/jsx-no-bind */
+                                        //     />
+                                        // )
                                     }
-                                </ProjectWatcher>
+                                {/* </ProjectWatcher>
                             )
                         ) : (
                             this.props.showComingSoon ? (
@@ -502,32 +512,34 @@ class MenuBar extends React.Component {
                                     <ShareButton className={styles.menuBarButton} />
                                 </MenuBarItemTooltip>
                             ) : []
-                        )}
-                        {this.props.canRemix ? remixButton : []}
+                        )} */}
+                        {/* {this.props.canRemix ? remixButton : []} */}
                     </div>
                     <div className={classNames(styles.menuBarItem, styles.communityButtonWrapper)}>
                         {this.props.enableCommunity ? (
                             (this.props.isShowingProject || this.props.isUpdating) && (
                                 <ProjectWatcher onDoneUpdating={this.props.onSeeCommunity}>
                                     {
-                                        waitForUpdate => (
-                                            <CommunityButton
-                                                className={styles.menuBarButton}
-                                                /* eslint-disable react/jsx-no-bind */
-                                                onClick={() => {
-                                                    this.handleClickSeeCommunity(waitForUpdate);
-                                                }}
-                                                /* eslint-enable react/jsx-no-bind */
-                                            />
-                                        )
+                                        // waitForUpdate => (
+                                        //     <CommunityButton
+                                        //         className={styles.menuBarButton}
+                                        //         /* eslint-disable react/jsx-no-bind */
+                                        //         onClick={() => {
+                                        //             this.handleClickSeeCommunity(waitForUpdate);
+                                        //         }}
+                                        //         /* eslint-enable react/jsx-no-bind */
+                                        //     />
+                                        // )
                                     }
                                 </ProjectWatcher>
                             )
-                        ) : (this.props.showComingSoon ? (
+                        ) : (
+                            this.props.showComingSoon ? (
                             <MenuBarItemTooltip id="community-button">
-                                <CommunityButton className={styles.menuBarButton} />
+                                {/* <CommunityButton className={styles.menuBarButton} /> */}
                             </MenuBarItemTooltip>
-                        ) : [])}
+                            ) : []
+                        )}
                     </div>
                 </div>
 
@@ -613,7 +625,20 @@ class MenuBar extends React.Component {
                     ) : (
                         // ******** no login session is available, so don't show login stuff
                         <React.Fragment>
-                            <div className={classNames(styles.menuBarItem, styles.feedbackButtonWrapper)}>
+                            <MenuBarItemTooltip
+                                place={this.props.isRtl ? 'right' : 'left'}
+                            >
+                                <div>
+                                    <Switch
+                                        labels={{}
+                                            
+                                        }
+                                        
+                                    />
+                                </div>
+
+                            </MenuBarItemTooltip>
+                            {/* <div className={classNames(styles.menuBarItem, styles.feedbackButtonWrapper)}>
                                 <a
                                     className={styles.feedbackLink}
                                     href="https://scratch.mit.edu/discuss/topic/312261/"
@@ -631,11 +656,11 @@ class MenuBar extends React.Component {
                                         />
                                     </Button>
                                 </a>
-                            </div>
-                            {this.props.showComingSoon ? (
+                            </div> */}
+                            {/* {this.props.showComingSoon ? ( */}
                                 <React.Fragment>
                                     <MenuBarItemTooltip id="mystuff">
-                                        <div
+                                        {/* <div
                                             className={classNames(
                                                 styles.menuBarItem,
                                                 styles.hoverable,
@@ -646,13 +671,13 @@ class MenuBar extends React.Component {
                                                 className={styles.mystuffIcon}
                                                 src={mystuffIcon}
                                             />
-                                        </div>
+                                        </div> */}
                                     </MenuBarItemTooltip>
                                     <MenuBarItemTooltip
                                         id="account-nav"
                                         place={this.props.isRtl ? 'right' : 'left'}
                                     >
-                                        <div
+                                        {/* <div
                                             className={classNames(
                                                 styles.menuBarItem,
                                                 styles.hoverable,
@@ -670,10 +695,18 @@ class MenuBar extends React.Component {
                                                 className={styles.dropdownCaretIcon}
                                                 src={dropdownCaret}
                                             />
-                                        </div>
+                                        </div> */}
+                                        
                                     </MenuBarItemTooltip>
+                                    
+                                    
+
                                 </React.Fragment>
-                            ) : []}
+
+                                {/*add switch*/}
+
+                                    
+                            {/* ) : []} */}
                         </React.Fragment>
                     )}
                 </div>

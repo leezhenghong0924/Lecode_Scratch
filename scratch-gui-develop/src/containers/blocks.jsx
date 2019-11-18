@@ -86,11 +86,11 @@ class Blocks extends React.Component {
 
 
 
-        this.props.vm.runtime.socket.on("recommendModule", msg => {
-            this.message = msg.message;
-            this.sprinkles(1);
-    
-        });
+        // this.props.vm.runtime.socket.on("recommendModule", msg => {
+        //     this.message = msg.message;
+        //     this.sprinkles(1);
+            
+        // });
     }
 
     sprinkles(n) {
@@ -102,13 +102,17 @@ class Blocks extends React.Component {
         var blocks = toolbox.getElementsByTagName('block');
         //var blocks=document.getElementById("eim.sendMessage");
         console.log(blocks);
-        for (var i = 0; i < n; i++) {
-          var blockXML = blocks[Math.floor(Math.random() * blocks.length)];
+        //for (var i = 0; i < n; i++) 
+        {
+          //var blockXML = blocks[Math.floor(Math.random() * blocks.length)];
+          var blockXML = blocks[blocks.length-1];
           var block = this.ScratchBlocks.Xml.domToBlock(blockXML, this.workspace);
           block.initSvg();
           block.moveBy(
-            Math.round(Math.random() * 450 + 40),
-            Math.round(Math.random() * 600 + 40)
+            // Math.round(Math.random() * 450 + 40),
+            // Math.round(Math.random() * 600 + 40)
+            Math.round(50 + 40),
+            Math.round(50 + 40)
           );
         }
     }
@@ -621,7 +625,7 @@ Blocks.defaultOptions = {
         colour: '#ddd'
     },
     colours: {
-				workspace: '#B50606',
+				workspace: '#F9F9F9',
         flyout: '#F9F9F9',
         toolbox: '#FFFFFF',//#FFFFFF
         toolboxSelected: '#E9EEF2',
